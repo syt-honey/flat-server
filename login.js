@@ -1,4 +1,4 @@
-import { g, POST, localStorage, prompt } from './utils.js'
+import { POST, localStorage, prompt } from './utils.js'
 
 if (localStorage.token) {
   var { name, token } = await POST('login', {}, {}, localStorage.token)

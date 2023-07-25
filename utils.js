@@ -9,7 +9,33 @@ g.GITHUB_CALLBACK = `https://${g.FLAT_SERVER_DOMAIN}/v1/login/github/callback?pl
 
 console.log('DOMAIN =', g.FLAT_SERVER_DOMAIN)
 
-export async function post(action, body, init, token, v2 = false) {
+import fs from 'fs'
+
+const file = new URL('./local-storage.json', import.meta.url)
+
+export const localStorage = new Proxy(
+  {},
+  {
+    get(a, p) {
+      try {
+        return (JSON.parse(fs.readFileSync(file, 'utf8')) || {})[p]
+      } catch {
+        return void 0
+      }
+    },
+    set(a, p, v) {
+      var data = {}
+      try {
+        data = JSON.parse(fs.readFileSync(file, 'utf8')) || {}
+      } catch {}
+      data[p] = v
+      fs.writeFileSync(file, JSON.stringify(data))
+      return v
+    },
+  },
+)
+
+export async function post(action, body = {}, init = {}, token = localStorage.token, v2 = false) {
   const url = `${v2 ? g.FLAT_SERVER_BASE_URL_V2 : g.FLAT_SERVER_BASE_URL_V1}/${action}`
   const headers = new Headers(init?.headers)
   const config = { method: 'POST', ...init, headers }
@@ -55,32 +81,6 @@ const _POST = (api) => async (action, body, config, token) => {
 
 export const POST = _POST(post)
 export const POST2 = _POST(postV2)
-
-import fs from 'fs'
-
-const file = new URL('./local-storage.json', import.meta.url)
-
-export const localStorage = new Proxy(
-  {},
-  {
-    get(a, p) {
-      try {
-        return (JSON.parse(fs.readFileSync(file, 'utf8')) || {})[p]
-      } catch {
-        return void 0
-      }
-    },
-    set(a, p, v) {
-      var data = {}
-      try {
-        data = JSON.parse(fs.readFileSync(file, 'utf8')) || {}
-      } catch {}
-      data[p] = v
-      fs.writeFileSync(file, JSON.stringify(data))
-      return v
-    },
-  },
-)
 
 export var ErrorCode = ((i) => (
   (i[(i.ParamsCheckFailed = 1e5)] = 'ParamsCheckFailed'),
