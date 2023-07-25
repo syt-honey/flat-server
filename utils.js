@@ -39,7 +39,7 @@ export const postV2 = (action, body, config, token) => post(action, body, config
 
 const _POST = (api) => async (action, body, config, token) => {
   try {
-    console.log(`POST /${api == postV2 ? 'v2' : 'v1'}/${action}`, JSON.stringify(body))
+    process.stdout.write(`POST /${api == postV2 ? 'v2' : 'v1'}/${action} ${JSON.stringify(body)} `)
     const res = await api(action, body, config, token)
     console.log('=> ' + JSON.stringify(res, null, 2))
 
@@ -49,7 +49,7 @@ const _POST = (api) => async (action, body, config, token) => {
     if (ErrorCode[err.message]) message += ` (${ErrorCode[err.message]})`
     console.error(message)
 
-    throw err
+    process.exit(1) // panic!
   }
 }
 
