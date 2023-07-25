@@ -7,7 +7,7 @@ g.FLAT_SERVER_BASE_URL_V1 = `https://${g.FLAT_SERVER_DOMAIN}/v1`
 g.FLAT_SERVER_BASE_URL_V2 = `https://${g.FLAT_SERVER_DOMAIN}/v2`
 g.GITHUB_CALLBACK = `https://${g.FLAT_SERVER_DOMAIN}/v1/login/github/callback?platform=web`
 
-console.log('FLAT_SERVER_DOMAIN =', g.FLAT_SERVER_DOMAIN)
+console.log('DOMAIN =', g.FLAT_SERVER_DOMAIN)
 
 export async function post(action, body, init, token, v2 = false) {
   const url = `${v2 ? g.FLAT_SERVER_BASE_URL_V2 : g.FLAT_SERVER_BASE_URL_V1}/${action}`
@@ -77,6 +77,7 @@ export const localStorage = new Proxy(
       } catch {}
       data[p] = v
       fs.writeFileSync(file, JSON.stringify(data))
+      return v
     },
   },
 )
