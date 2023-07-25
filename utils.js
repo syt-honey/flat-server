@@ -65,7 +65,8 @@ export const postV2 = (action, body, config, token) => post(action, body, config
 
 const _POST = (api) => async (action, body, config, token) => {
   try {
-    process.stdout.write(`POST /${api == postV2 ? 'v2' : 'v1'}/${action} ${JSON.stringify(body)} `)
+    const payload = body ? ' ' + JSON.stringify(body) : ''
+    process.stdout.write(`POST /${api == postV2 ? 'v2' : 'v1'}/${action}${payload} `)
     const res = await api(action, body, config, token)
     console.log('=> ' + JSON.stringify(res, null, 2))
 
