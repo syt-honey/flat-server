@@ -63,9 +63,15 @@ export async function post(action, body = {}, init = {}, token = localStorage.to
 
 export const postV2 = (action, body, config, token) => post(action, body, config, token, true)
 
+const empty = (e) => {
+  if (!e) return true
+  for (var k in e) return false
+  return true
+}
+
 const _POST = (api) => async (action, body, config, token) => {
   try {
-    const payload = body ? ' ' + JSON.stringify(body) : ''
+    const payload = !empty(body) ? ' ' + JSON.stringify(body) : ''
     process.stdout.write(`POST /${api == postV2 ? 'v2' : 'v1'}/${action}${payload} `)
     const res = await api(action, body, config, token)
     console.log('=> ' + JSON.stringify(res, null, 2))
