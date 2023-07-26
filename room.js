@@ -6,5 +6,6 @@ if (!localStorage.token) {
 }
 
 // await POST('room/create/ordinary', { title: 'test', type: 'BigClass', beginTime: Date.now(), region: 'sg' })
-const [{ roomUUID, inviteCode }] = await POST('room/list/all?page=1')
-await POST('room/join', { uuid: roomUUID })
+// const [{ roomUUID, inviteCode }] = await POST('room/list/all?page=1')
+// await POST('room/join', { uuid: roomUUID })
+// await POST('room/cancel/ordinary', { roomUUID })
